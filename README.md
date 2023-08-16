@@ -18,10 +18,12 @@ Heavy rain fall lets the level measurment rise, which leads to a CSO event aroun
 ## Architecture
 <p align="center">
 <img src="images/LSTMArchi.png" width="500" height="600">
-<p>
+</p>
+  
 ## Performance
-
+<p align="center">
 <img src="images/roc3m.png" width="27%" height="27%"><img src="images/MAE.png">
+</p>
 
 The ROC curve gives the ratio between FPR and TPR. The depicted curve is way above the diagonal line which indicates a very good diagnostic ability. This is further strengthened by the AUC, which reaches a value of 0.91. Therefore this is indicating that the chosen model has an excellent measure of separability and it is up to the given task of detection the anomalies of the data set. The prediction error on the other hand shows the comparison between the original data set and the predicted data. The depicted density distribution displays a peak around an error of  5$\cdot 10^{-3}$ and most of the data has a smaller prediction error, or more precisely 85.3\%.  
 
