@@ -1,19 +1,6 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-# %matplotlib inline
-import seaborn as sns
-import random
-from numpy import array
-from keras import datasets
-from sklearn.decomposition import PCA
-from sklearn.manifold import TSNE
 
-
-data17 = pd.read_excel(open('BWB_PI-Daten_wil2.xlsx', 'rb'), sheet_name='2017', header=1, skiprows=0)
-data17cso = pd.read_excel(open('CSO-Sim_wil.xlsx', 'rb'), sheet_name='2017', header=0)
-data16 = pd.read_excel(open('BWB_PI-Daten_wil2.xlsx', 'rb'), sheet_name='2016', header=1, skiprows=0)
-data16cso = pd.read_excel(open('CSO-Sim_wil.xlsx', 'rb'), sheet_name='2016', header=0)
 
 def set_colums(data, datacso):
     data.columns = ['Time',
@@ -179,18 +166,22 @@ def cso(datacso):
     print(anomaly_list)
     return list_pegel_cso
 
-def data_cso_2017(data17, data17cso):
+def data_2017():
+    data17 = pd.read_excel(open('BWB_PI-Daten_wil2.xlsx', 'rb'), sheet_name='2017', header=1, skiprows=0)
+    data17cso = pd.read_excel(open('CSO-Sim_wil.xlsx', 'rb'), sheet_name='2017', header=0)
     data, datacso = set_colums(data17, data17cso)
     combined17 = clean_data(data, datacso)
     durchflusss = durchfluss(data)
     pegel_ZK = pegel_zk(data)
     pegel_cso  = cso(datacso)
-    return combined17, pegel_ZK, durchflusss, pegel_cso
+    return [combined17, pegel_ZK, durchflusss, pegel_cso]
 
-def data_cso_2016(data16, data16cso):
+def data_2016():
+    data16 = pd.read_excel(open('BWB_PI-Daten_wil2.xlsx', 'rb'), sheet_name='2016', header=1, skiprows=0)
+    data16cso = pd.read_excel(open('CSO-Sim_wil.xlsx', 'rb'), sheet_name='2016', header=0)
     data, datacso = set_colums(data16, data16cso)
     combined16 = clean_data(data, datacso)
     durchflusss = durchfluss(data)
     pegel_ZK = pegel_zk(data)
     pegel_CSO = cso(datacso)
-    return combined16, pegel_ZK, durchflusss, pegel_CSO
+    return [combined16, pegel_ZK, durchflusss, pegel_CSO]

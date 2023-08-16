@@ -701,6 +701,19 @@ sns.scatterplot(
 
 #Window
 """
+model = Sequential()
+model.add(LSTM(128, activation='relu', input_shape=(timesteps,1), return_sequences=True))
+model.add(LSTM(64, activation='relu', return_sequences=False))
+model.add(RepeatVector(timesteps))
+model.add(LSTM(64, activation='relu', return_sequences=True))
+model.add(LSTM(128, activation='relu', return_sequences=True))
+model.add(TimeDistributed(Dense(n_features)))
+model.compile(optimizer='adam', loss='mse')
+model.summary()
+
+
+print(x_train.shape)
+
 
 window_size = (int)(6*60/5) #6 stunden in minuten schritten
 list_pegel_ZK_np = np.asarray(list_pegel_ZK)

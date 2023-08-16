@@ -1,11 +1,19 @@
 import numpy as np
 import keras
+import matplotlib.pyplot as plt
 from keras import Sequential
-from keras.layers import Dense, RepeatVector,        TimeDistributed
+from keras.layers import Dense, RepeatVector, TimeDistributed
 from keras.layers import LSTM
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+from mpl_toolkits.mplot3d import Axes3D
+from keras.callbacks import History
+import seaborn as sns
+import data_preparation as dp
 
-
-def pca():
+data17 = dp.data_2017()
+data16 = dp.data_2016()
+def pca(data):
     temp = data.copy()
 
     pcacols = ['Durchfluss RUH',
@@ -43,9 +51,11 @@ def pca():
     ax.set_zlabel('pca-three')
     plt.show()
 
-def tsne():
+    return pcadata
+
+def tsne(data):
     tsne = TSNE(n_components=2, verbose=1, perplexity=40, n_iter=300)
-    tsne_results = tsne.fit_transform(pcadata)
+    tsne_results = tsne.fit_transform(pca(data))
 
     temp['tsne-2d-one'] = tsne_results[:, 0]
     temp['tsne-2d-two'] = tsne_results[:, 1]
@@ -81,7 +91,7 @@ def tsne():
         ax=ax2
 
 
-def windwoing():
+def windwoing(data):
     window_size = (int)(6 * 60 / 5)  # 6 stunden in minuten schritten
     list_pegel_ZK_np = np.asarray(list_pegel_ZK)
     list_pegel_ZK_flat = list_pegel_ZK_np.flatten()
@@ -104,8 +114,8 @@ def windwoing():
             count = 0
     return window_list
 
-def lstm():
-    x_train = window_list
+def lstm(data):
+    x_train = windwoing(data)
     x_train = np.asarray(x_train) / (np.nanmax(x_train))
     print(x_train.shape)
 
@@ -113,7 +123,6 @@ def lstm():
     # print(x_train)
 
     x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], 1))
-    x_train_uc = x_train
     print(x_train)
     timesteps = 72
     model = Sequential()
@@ -147,8 +156,9 @@ def lstm():
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
 
+
 def prediction():
-    x_train = x_train_uc
+    x_train = windwoing(data)
     yhat = model.predict(x_train)
     print('---Predicted---')
     print(np.round(yhat, 3))

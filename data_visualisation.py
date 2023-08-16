@@ -3,11 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 # %matplotlib inline
 import seaborn as sns
-import random
-from numpy import array
-from keras import datasets
-from sklearn.decomposition import PCA
-from sklearn.manifold import TSNE
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, FuncFormatter)
 import data_preparation as dp
 
