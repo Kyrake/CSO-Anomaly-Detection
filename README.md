@@ -1,4 +1,4 @@
 # CSO-Anomaly-Detection
 
 
-<img src="images/nonCSOEvent.png" alt="isolated" width="200"/>
+<img src="images/nonCSOEvent.png" alt="isolated"/>
