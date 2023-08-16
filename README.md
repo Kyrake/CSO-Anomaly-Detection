@@ -17,10 +17,10 @@ Heavy rain fall lets the level measurment rise, which leads to a CSO event aroun
 <img src="images/anomalousday.png">
 ## Architecture
 
-<img src="images/Autoencoder.pdf scale=0.9">
+<img src="images/Autoencoder.pdf">
 
 ## Performance
 
-<img src="images/roc3m.png scale=0.9"><img src="images/MAE.png">
+<img src="images/roc3m.png"><img src="images/MAE.png">
 
 
