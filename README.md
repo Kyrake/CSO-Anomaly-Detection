@@ -17,7 +17,7 @@ Heavy rain fall lets the level measurment rise, which leads to a CSO event aroun
 <img src="images/anomalousday.png">
 ## Architecture
 
-<img src="images/LSTMArchi.png style="height:200px;">
+<img src="images/LSTMArchi.png width="100" height="200">
 
 ## Performance
 
