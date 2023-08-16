@@ -14,7 +14,7 @@ Heavy rain fall lets the level measurment rise, which leads to a CSO event aroun
 
 ## Performance
 
-<img src="images/MAE.png">
-<img src="images/roc3m.png">
+<img src="images/MAE.png"><img src="images/roc3m.png">
+
 
 ## Results
