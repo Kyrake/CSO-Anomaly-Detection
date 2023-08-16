@@ -1,6 +1,10 @@
 # CSO-Anomaly-Detection
 
-
+# Table of Contents
+1. Introduction(#introduction)
+2. [Example2](#example2)
+3. [Third Example](#third-example)
+4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
 
 ## Introduction
 Combined Sewer Overflow (CSO) events are a major reason for water pollution in open water bodies. Each time the sewer system is loaded with more storm- and wastewater than the connected sewer treatment plant can handle, the overload of storm- and wastewater is pumped into adjacent water bodies \cite{bwb}. Therefore it is necessary to detect possible incoming CSO events, in order to prevent an overload of the sewage system and be able to initiate counter measures before pumping additional wastewater into nature.  
@@ -12,9 +16,11 @@ A typical day without CSO events. The level measurement of the groundwater is hi
 Heavy rain fall lets the level measurment rise, which leads to a CSO event around noon. This leads to wasterwater being pumped into nearby rivers in order to relieve the sewers - and the level measurement sinks again.
 <img src="images/anomalousday.png">
 ## Architecture
+
+<img src="images/Autoencoder.pdf scale=0.9">
+
 ## Performance
 
-<img src="images/roc3m.png"><img src="images/MAE.png">
+<img src="images/roc3m.png scale=0.9"><img src="images/MAE.png">
 
 
-## Results
