@@ -19,6 +19,8 @@ Heavy rain fall lets the level measurment rise, which leads to a CSO event aroun
 <p align="center">
 <img src="images/LSTMArchi.png" width="500" height="600">
 </p>
+
+The chose Architecture for the anomaly detection algorithm is a LSTM-AE. It has a typical stacked autoencoder structure with three layers building the encoder, three layers building the decoder and the bottleneck in between. The decoder and the encoder have three LSTM layers each. The input layer has as much nodes as the multiple of the size of the window. The shown repeat vector provides the output of the bottleneck, which is the feature vector. More precisely it takes the encoded feature vector and duplicates it  in order to have the correct dimension for the decoding layers. The time distributed time distributed Layer at the end of the decoder creates a vector of the length equal to the number of features outputted from the previous layer. This allows the network to operate in an unsupervised manner and labelling the data isnt necessary.
   
 ## Performance
 <p align="center">
