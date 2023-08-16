@@ -88,7 +88,7 @@ def durchfluss(data):
     anomalies_list_time = list_time
     # list_durchfluss = list_durchfluss[140:150]
 
-    return list_durchfluss
+    return list_durchfluss, list_time
 
 def pegel_zk(data):
     pegel_ZK = data['Wil Pegel ZK'].values.tolist()
@@ -171,17 +171,17 @@ def data_2017():
     data17cso = pd.read_excel(open('CSO-Sim_wil.xlsx', 'rb'), sheet_name='2017', header=0)
     data, datacso = set_colums(data17, data17cso)
     combined17 = clean_data(data, datacso)
-    durchflusss = durchfluss(data)
+    durchflusss, list_time = durchfluss(data)
     pegel_ZK = pegel_zk(data)
     pegel_cso  = cso(datacso)
-    return [combined17, pegel_ZK, durchflusss, pegel_cso]
+    return [combined17, pegel_ZK, durchflusss, pegel_cso, list_time]
 
 def data_2016():
     data16 = pd.read_excel(open('BWB_PI-Daten_wil2.xlsx', 'rb'), sheet_name='2016', header=1, skiprows=0)
     data16cso = pd.read_excel(open('CSO-Sim_wil.xlsx', 'rb'), sheet_name='2016', header=0)
     data, datacso = set_colums(data16, data16cso)
     combined16 = clean_data(data, datacso)
-    durchflusss = durchfluss(data)
+    durchflusss, list_time = durchfluss(data)
     pegel_ZK = pegel_zk(data)
     pegel_CSO = cso(datacso)
-    return [combined16, pegel_ZK, durchflusss, pegel_CSO]
+    return [combined16, pegel_ZK, durchflusss, pegel_CSO, list_time]

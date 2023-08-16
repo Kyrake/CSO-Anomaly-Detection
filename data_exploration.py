@@ -15,18 +15,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 # %matplotlib inline
 import seaborn as sns
-import random
-from numpy import array
-from keras import datasets
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
-from mpl_toolkits.mplot3d import Axes3D
-from keras.callbacks import History
-from keras.activations import relu
-from keras.datasets import mnist
 from keras.layers import Input, Dense, Conv2D, MaxPool2D, UpSampling2D, MaxPooling2D, Conv1D, MaxPooling1D, UpSampling1D
-from keras.models import Model
-from keras import backend as K
+
 # make pandas only display two decimals
 pd.options.display.float_format = '{:.2f}'.format
 

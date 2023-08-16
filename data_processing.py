@@ -1,15 +1,13 @@
 import numpy as np
-import keras
 import matplotlib.pyplot as plt
 from keras import Sequential
 from keras.layers import Dense, RepeatVector, TimeDistributed
 from keras.layers import LSTM
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
-from mpl_toolkits.mplot3d import Axes3D
-from keras.callbacks import History
 import seaborn as sns
 import data_preparation as dp
+import matplotlib.pyplot as plt
 
 data17 = dp.data_2017()
 data16 = dp.data_2016()
@@ -54,6 +52,7 @@ def pca(data):
     return pcadata
 
 def tsne(data):
+    temp = data.copy()
     tsne = TSNE(n_components=2, verbose=1, perplexity=40, n_iter=300)
     tsne_results = tsne.fit_transform(pca(data))
 
@@ -89,11 +88,11 @@ def tsne(data):
         legend="full",
         alpha=0.3,
         ax=ax2
-
+    )
 
 def windwoing(data):
     window_size = (int)(6 * 60 / 5)  # 6 stunden in minuten schritten
-    list_pegel_ZK_np = np.asarray(list_pegel_ZK)
+    list_pegel_ZK_np = np.asarray(data[2])
     list_pegel_ZK_flat = list_pegel_ZK_np.flatten()
     window = []
     step_size = 3
@@ -145,6 +144,7 @@ def lstm(data):
                         shuffle=False,
                         validation_split=0.1)
 
+
     ##plot lossfunction
     print(history.history.keys())
     # summarize history for loss
@@ -155,11 +155,12 @@ def lstm(data):
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
-
-
-def prediction():
-    x_train = windwoing(data)
     yhat = model.predict(x_train)
+    return yhat
+
+def prediction(data):
+    x_train = windwoing(data)
+    yhat = lstm(data)
     print('---Predicted---')
     print(np.round(yhat, 3))
     print('---Actual---')
@@ -169,9 +170,12 @@ def prediction():
     train_mae_loss = np.mean(np.abs(np.round(yhat, 3) - np.round(x_train, 3) ** 2), axis=1)
     print(train_mae_loss)
     sns.distplot(train_mae_loss, bins=50, kde=True);
-def anomalies():
-    threshold = 0.182
 
+    return train_mae_loss
+def anomalies(data):
+    threshold = 0.182
+    train_mae_loss = prediction(data)
+    x_train = windwoing(data)
     listi = []
 
     for i in range(len(x_train)):
@@ -199,29 +203,27 @@ def anomalies():
 
     list_of_anomalies = [i for i, x in enumerate(listi) if x["anomaly"][0] == True]
     print(len(list_of_anomalies))
-    print(list_pegel_ZK_np.shape)
-    print(list_pegel_ZK_flat.shape)
     print(x_train.shape)
     # 288 werte pro tag
     # da 6 std => 4 (nicht überlappende) windows pro tag
     # da stepsize = 12
     day_indeces = list(set([(int)((i - 1) / (4 * 24)) for i in list_of_anomalies]))
-    days_with_anomalies = [x for i, x in enumerate(list_pegel_ZK_np) if i in day_indeces]
-    days_with_anomalies_cso = [x for i, x in enumerate(list_pegel_cso) if i in day_indeces]
+    days_with_anomalies = [x for i, x in enumerate(data[1]) if i in day_indeces]
+    days_with_anomalies_cso = [x for i, x in enumerate(data[3]) if i in day_indeces]
     print((day_indeces))
     print(len(days_with_anomalies_cso))
 
-    import matplotlib.pyplot as plt
     no_segment = len(days_with_anomalies)
     fig, axs = plt.subplots(nrows=no_segment, ncols=1, sharex=False, figsize=(150, 50))
     ax1 = axs.flat
+    ax2 = ax1
 
     fig.tight_layout()
     # fig.subplots_adjust(hspace = 0.2, wspace=1.4)
     for i in range(no_segment):
-        ax1[i].plot(anomalies_list_time[i], days_with_anomalies[i])
+        ax1[i].plot(data[4][i], days_with_anomalies[i])
         ax1[i].set_ylim([np.min(days_with_anomalies) - 0.1, np.max(days_with_anomalies) + 0.1])
         ax2[i] = ax1[i].twinx()
-        ax2[i].plot(list_time[i], days_with_anomalies_cso[i], color='tab:red')
+        ax2[i].plot(data[4][i], days_with_anomalies_cso[i], color='tab:red')
         ax2[i].set_ylim([np.min(days_with_anomalies_cso) - 0.1, np.max(days_with_anomalies_cso) + 0.1])
         axs[i].set_title("DAY: %d" % day_indeces[i])

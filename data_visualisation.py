@@ -8,10 +8,10 @@ import data_preparation as dp
 
 
 
-def plot_cso():
+def plot_cso(data):
 
-    list_time_plot = np.asarray(list_time)
-    list_pegel_ZK_plot = np.asarray(list_pegel_ZK)
+    list_time_plot = np.asarray(data[4])
+    list_pegel_ZK_plot = np.asarray(data[1])
     row_list_time = np.arange(0,list_pegel_ZK_plot.flatten().shape[0]*5, 5)
 
     major_ticks = np.arange(0, list_pegel_ZK_plot.flatten().shape[0]*5, 24*60)
@@ -27,8 +27,8 @@ def plot_cso():
     plt.show()
 
     plt.rcParams['figure.figsize'] = [300,5]
-    list_time_plot = np.asarray(list_time)
-    list_pegel_CSO_plot = np.asarray(list_pegel_cso)
+    list_time_plot = np.asarray(data[1])
+    list_pegel_CSO_plot = np.asarray(data[3])
     row_list_time = np.arange(0,list_pegel_CSO_plot.flatten().shape[0]*5, 5)
 
     major_ticks = np.arange(0, list_pegel_CSO_plot.flatten().shape[0]*5, 24*60)
@@ -41,7 +41,7 @@ def plot_cso():
     ax.xaxis.set_major_formatter(FuncFormatter( format_func ))
     plt.plot(row_list_time, list_pegel_CSO_plot.flatten())
 
-def plot cso_by_location():
+def plot_cso_by_location(data, datacso):
     datacso.head()
     # no NaN in this dataset
 
@@ -113,7 +113,7 @@ def plot cso_by_location():
     temp.plot.scatter(x=field1, y=field2)
     plt.savefig('pegelcsosum.png')
 
-    sns.pairplot(combined)  # , size = 2.5)
+    sns.pairplot(data[0])  # , size = 2.5)
     # plt.show()
     plt.savefig('pairplot.png')
 
@@ -137,7 +137,7 @@ def plot cso_by_location():
     plt.savefig('allcso3.png')
 
 
-def plot_durchfluss():
+def plot_durchfluss(data):
     no_segment = 180
     fig, axs = plt.subplots(nrows=no_segment, ncols=1, sharex=False, figsize=(10, 500))
     ax1 = axs.flat
@@ -151,18 +151,18 @@ def plot_durchfluss():
     fig.tight_layout()
     # fig.subplots_adjust(hspace = 0.2, wspace=1.4)
     for i in range(no_segment):
-        ax1[i].plot(list_time[i], list_durchfluss[i])
-        ax1[i].set_ylim([np.min(list_durchfluss) - 0.1, np.max(list_durchfluss) + 0.1])
+        ax1[i].plot(data[4][i], data[2][i])
+        ax1[i].set_ylim([np.min(data[2]) - 0.1, np.max(data[2]) + 0.1])
         ax2[i] = ax1[i].twinx()
-        ax2[i].plot(list_time[i], list_pegel_cso[i], color='tab:red')
-        ax2[i].set_ylim([np.min(list_pegel_cso) - 0.1, np.max(list_pegel_cso) + 0.1])
+        ax2[i].plot(data[4][i], data[3][i], color='tab:red')
+        ax2[i].set_ylim([np.min(data[3]) - 0.1, np.max(data[3]) + 0.1])
         ax3[i] = ax1[i].twinx()
-        ax3[i].plot(list_time[i], list_pegel_ZK[i], color='tab:green')
-        ax3[i].set_ylim([np.min(list_pegel_ZK) - 0.1, np.max(list_pegel_ZK) + 0.1])
+        ax3[i].plot(data[4][i], data[1][i], color='tab:green')
+        ax3[i].set_ylim([np.min(data[1]) - 0.1, np.max(data[1]) + 0.1])
 
         axs[i].set_title("DAY: %d" % i)
 
-def plot_pegelZK():
+def plot_pegelZK(data):
     no_segment = 180
     fig, axs = plt.subplots(nrows=no_segment, ncols=1, sharex=False, figsize=(10, 500))
     ax1 = axs.flat
@@ -172,11 +172,11 @@ def plot_pegelZK():
     fig.tight_layout()
     # fig.subplots_adjust(hspace = 0.2, wspace=1.4)
     for i in range(no_segment):
-        ax1[i].plot(list_time[i], list_pegel_ZK[i])
-        ax1[i].set_ylim([np.min(list_pegel_ZK) - 0.1, np.max(list_pegel_ZK) + 0.1])
+        ax1[i].plot(data[4][i], data[1][i])
+        ax1[i].set_ylim([np.min(data[1]) - 0.1, np.max(data[1]) + 0.1])
         ax2[i] = ax1[i].twinx()
-        ax2[i].plot(list_time[i], list_pegel_cso[i], color='tab:red')
-        ax2[i].set_ylim([np.min(list_pegel_cso) - 0.1, np.max(list_pegel_cso) + 0.1])
+        ax2[i].plot(data[4][i], data[3][i], color='tab:red')
+        ax2[i].set_ylim([np.min(data[3]) - 0.1, np.max(data[3]) + 0.1])
         axs[i].set_title("DAY: %d" % i)
 
     no_segment = 180
@@ -186,11 +186,11 @@ def plot_pegelZK():
     fig.tight_layout()
     # fig.subplots_adjust(hspace = 0.2, wspace=1.4)
     for i in range(no_segment):
-        ax_flat[i].plot(list_time[i], list_pegel_cso[i])
+        ax_flat[i].plot(data[1][i], data[3][i])
 
         axs[i].set_title("DAY: %d" % i)
 
-def plot_rainmeter():
+def plot_rainmeter(data):
     columns = ['Wil RM', 'Wil a RM', 'Wil m RM']
     axes = data[columns].plot(figsize=(16, 10), subplots=True)  # marker='.', alpha=0.5, linestyle='None',
     for ax in axes:
