@@ -10,11 +10,11 @@ A typical day without CSO events. The level measurement of the groundwater is hi
 <img src="images/nonCSOEvent.png">
 
 Heavy rain fall lets the level measurment rise, which leads to a CSO event around noon. This leads to wasterwater being pumped into nearby rivers in order to relieve the sewers - and the level measurement sinks again.
-<img src="images/CSOEvent.png">
+<img src="images/anomalousday.png">
 
 ## Performance
 
-<img src="images/CSOEvent.png">
+<img src="images/MAE.png">
 <img src="images/roc3m.png">
 
 ## Results
