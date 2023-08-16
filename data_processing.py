@@ -146,3 +146,72 @@ def lstm():
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
+
+def prediction():
+    x_train = x_train_uc
+    yhat = model.predict(x_train)
+    print('---Predicted---')
+    print(np.round(yhat, 3))
+    print('---Actual---')
+    print(np.round(x_train, 3))
+
+    print(yhat.shape)
+    train_mae_loss = np.mean(np.abs(np.round(yhat, 3) - np.round(x_train, 3) ** 2), axis=1)
+    print(train_mae_loss)
+    sns.distplot(train_mae_loss, bins=50, kde=True);
+def anomalies():
+    threshold = 0.182
+
+    listi = []
+
+    for i in range(len(x_train)):
+        thisdict = {
+            "loss": train_mae_loss[i],
+            "threshold": threshold,
+            "anomaly": train_mae_loss[i] > threshold,
+            "value": x_train[i]
+        }
+
+        listi.append(thisdict)
+
+    row_list_time = np.arange(0, x_train.shape[0] * 5, 5)
+    listi = np.asarray(listi)
+    print(len(listi))
+    print(row_list_time.shape)
+    row_loss = [listi[i]["loss"] for i in range(len(listi))]
+    row_threshold = [listi[i]["threshold"] for i in range(len(listi))]
+
+    plt.rcParams['figure.figsize'] = [10, 10]
+    plt.plot(row_list_time, row_loss, label='loss')
+    plt.plot(row_list_time, row_threshold, label='threshold')
+    plt.xticks(rotation=25)
+    plt.legend();
+
+    list_of_anomalies = [i for i, x in enumerate(listi) if x["anomaly"][0] == True]
+    print(len(list_of_anomalies))
+    print(list_pegel_ZK_np.shape)
+    print(list_pegel_ZK_flat.shape)
+    print(x_train.shape)
+    # 288 werte pro tag
+    # da 6 std => 4 (nicht überlappende) windows pro tag
+    # da stepsize = 12
+    day_indeces = list(set([(int)((i - 1) / (4 * 24)) for i in list_of_anomalies]))
+    days_with_anomalies = [x for i, x in enumerate(list_pegel_ZK_np) if i in day_indeces]
+    days_with_anomalies_cso = [x for i, x in enumerate(list_pegel_cso) if i in day_indeces]
+    print((day_indeces))
+    print(len(days_with_anomalies_cso))
+
+    import matplotlib.pyplot as plt
+    no_segment = len(days_with_anomalies)
+    fig, axs = plt.subplots(nrows=no_segment, ncols=1, sharex=False, figsize=(150, 50))
+    ax1 = axs.flat
+
+    fig.tight_layout()
+    # fig.subplots_adjust(hspace = 0.2, wspace=1.4)
+    for i in range(no_segment):
+        ax1[i].plot(anomalies_list_time[i], days_with_anomalies[i])
+        ax1[i].set_ylim([np.min(days_with_anomalies) - 0.1, np.max(days_with_anomalies) + 0.1])
+        ax2[i] = ax1[i].twinx()
+        ax2[i].plot(list_time[i], days_with_anomalies_cso[i], color='tab:red')
+        ax2[i].set_ylim([np.min(days_with_anomalies_cso) - 0.1, np.max(days_with_anomalies_cso) + 0.1])
+        axs[i].set_title("DAY: %d" % day_indeces[i])
